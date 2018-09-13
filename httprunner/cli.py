@@ -8,8 +8,8 @@ import unittest
 
 from httprunner import logger
 from httprunner.__about__ import __description__, __version__
-from httprunner.compat import is_py2
 from httprunner.api import HttpRunner
+from httprunner.compat import is_py2
 from httprunner.utils import (create_scaffold, get_python2_retire_msg,
                               prettify_json_file, validate_json_file)
 
@@ -74,11 +74,18 @@ def main_hrun():
 
     project_name = args.startproject
     if project_name:
-        project_path = os.path.join(os.getcwd(), project_name)
-        create_scaffold(project_path)
+        create_scaffold(project_name)
         exit(0)
 
-    runner = HttpRunner(failfast=args.failfast, dot_env_path=args.dot_env_path).run(args.testset_paths)
+    try:
+        runner = HttpRunner(
+            failfast=args.failfast,
+            dot_env_path=args.dot_env_path
+        )
+        runner.run(args.testset_paths)
+    except Exception:
+        logger.log_error("!!!!!!!!!! exception stage: {} !!!!!!!!!!".format(runner.exception_stage))
+        raise
 
     if not args.no_html_report:
         runner.gen_html_report(

@@ -167,19 +167,19 @@ class TestUtils(ApiServerUnittest):
                 }
             }
         }
-        new_dict = utils.lower_config_dict_key(origin_dict)
+        new_dict = utils.lower_test_dict_keys(origin_dict)
         self.assertIn("name", new_dict)
         self.assertIn("request", new_dict)
         self.assertIn("method", new_dict["request"])
         self.assertIn("headers", new_dict["request"])
-        self.assertIn("accept", new_dict["request"]["headers"])
-        self.assertIn("user-agent", new_dict["request"]["headers"])
+        self.assertIn("Accept", new_dict["request"]["headers"])
+        self.assertIn("User-Agent", new_dict["request"]["headers"])
 
         origin_dict = {
             "Name": "test",
             "Request": "$default_request"
         }
-        new_dict = utils.lower_config_dict_key(origin_dict)
+        new_dict = utils.lower_test_dict_keys(origin_dict)
         self.assertIn("$default_request", new_dict["request"])
 
     def test_lower_dict_keys(self):
@@ -252,15 +252,15 @@ class TestUtils(ApiServerUnittest):
             utils.override_mapping_list(map_list, override_mapping)
 
     def test_create_scaffold(self):
-        project_path = os.path.join(os.getcwd(), "projectABC")
-        utils.create_scaffold(project_path)
-        self.assertTrue(os.path.isdir(os.path.join(project_path, "api")))
-        self.assertTrue(os.path.isdir(os.path.join(project_path, "testcases")))
-        self.assertTrue(os.path.isdir(os.path.join(project_path, "testsuites")))
-        self.assertTrue(os.path.isdir(os.path.join(project_path, "reports")))
-        self.assertTrue(os.path.isfile(os.path.join(project_path, "debugtalk.py")))
-        self.assertTrue(os.path.isfile(os.path.join(project_path, ".env")))
-        shutil.rmtree(project_path)
+        project_name = "projectABC"
+        utils.create_scaffold(project_name)
+        self.assertTrue(os.path.isdir(os.path.join(project_name, "api")))
+        self.assertTrue(os.path.isdir(os.path.join(project_name, "testcases")))
+        self.assertTrue(os.path.isdir(os.path.join(project_name, "testsuites")))
+        self.assertTrue(os.path.isdir(os.path.join(project_name, "reports")))
+        self.assertTrue(os.path.isfile(os.path.join(project_name, "debugtalk.py")))
+        self.assertTrue(os.path.isfile(os.path.join(project_name, ".env")))
+        shutil.rmtree(project_name)
 
     def test_cartesian_product_one(self):
         parameters_content_list = [
